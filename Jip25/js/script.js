@@ -1,4 +1,3 @@
-<script>
 // --- Dados iniciais ---
 const initialTeams = [
   '6°A','6°B','6°C','6°D','7°A','7°C','7°D','8°A','8°B','8°C','8°D','9°A','9°B','1° ANO','2° ANO','3° ANO'
@@ -165,6 +164,3 @@ qs('#btnAtualizar').addEventListener('click', renderRanking);
 
 // --- Init ---
 loadOrInit(); populateSelectors(); renderMatches(); renderRanking();
-</script>
-</body>
-</html>
