@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JIP 2025 —  Gestão de Torneio</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/script.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">
+        <img src="imagens/Imagem5.png" alt="Logo">
+      </div>
+      <div>
+        <h1>JIP 2025 — Painel de Organização</h1>
+      </div>
+    </header>
+
+    <div class="grid">
+      <aside class="card">
+        <div class="header-row">
+          <strong>Configurações</strong>
+          <div class="small muted">Salvamento local</div>
+        </div>
+
+        <div style="margin-top:10px">
+          <div class="small">Modalidade</div>
+          <select id="selModalidade"></select>
+
+          <div style="margin-top:10px"><div class="small">Categoria</div>
+            <select id="selCategoria">
+              <option value="misto">Misto</option>
+              <option value="masculino">Masculino</option>
+              <option value="feminino">Feminino</option>
+            </select>
+          </div>
+
+          <div style="margin-top:10px">
+            <div class="small">Turma A</div>
+            <select id="selEquipeA"></select>
+          </div>
+          <div style="margin-top:10px">
+            <div class="small">Turma B</div>
+            <select id="selEquipeB"></select>
+          </div>
+
+          <div style="margin-top:10px">
+            <div class="small">Data / Hora</div>
+            <input id="inpData" type="datetime-local" />
+          </div>
+
+          <div style="margin-top:10px" class="row">
+            <button id="btnCriar">Criar partida</button>
+            <button id="btnReset" class="btn-ghost">Resetar tudo</button>
+          </div>
+
+          <div class="small" style="margin-top:10px">Pontuação por resultado</div>
+          <div style="display:flex;gap:8px;margin-top:6px">
+            <input id="ptsWin" type="number" min="0" value="3" style="width:70px" />
+            <input id="ptsDraw" type="number" min="0" value="1" style="width:70px" />
+            <input id="ptsLose" type="number" min="0" value="0" style="width:70px" />
+          </div>
+
+          <hr style="border:none;border-top:1px solid rgba(255,255,255,0.03);margin:12px 0" />
+
+          <div class="small">Filtrar ranking</div>
+          <div style="margin-top:8px" class="controls">
+            <select id="filterModalidade"><option value="all">Todas as modalidades</option></select>
+            <select id="filterCategoria"><option value="all">Todas categorias</option><option value="misto">Misto</option><option value="masculino">Masculino</option><option value="feminino">Feminino</option></select>
+            <button id="btnAtualizar" class="btn-ghost">Atualizar ranking</button>
+          </div>
+
+        </div>
+      </aside>
+
+      <main>
+        <div class="card" style="margin-bottom:12px">
+          <div class="header-row">
+            <strong>Partidas agendadas</strong>
+            <div class="chip" id="totalMatches">0 partidas</div>
+          </div>
+
+          <div class="list matches-list" id="matches"></div>
+        </div>
+
+        <div class="card">
+          <div class="header-row">
+            <strong>Classificação (por modalidade ou geral)</strong>
+            <div class="small muted">Ordenado por: pontos → saldo → vitórias</div>
+          </div>
+
+          <div style="margin-top:10px" id="rankingArea"></div>
+        </div>
+      </main>
+    </div>
+
+    <footer style="margin-top:16px;color:var(--muted);font-size:13px">Protótipo gerado automaticamente — abrir no navegador. Os dados ficam no seu computador (LocalStorage).</footer>
+  </div>
+
+</body>
+</html>
