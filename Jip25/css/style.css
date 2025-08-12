@@ -1,6 +1,6 @@
 :root {
-  --bg: #ef856f; /* slate-800 */
-  --card: #fe8c8c; /* slate-700 */
+  --bg: #7e7c7c; /* slate-800 */
+  --card: #ee5050; /* slate-700 */
   --accent: #ffffff; /* cyan-400 */
   --accent2: #f59e0b;
   --text: #ffffff; /* slate-100 */
@@ -62,7 +62,11 @@ header {
   object-fit: cover;
   display: block;
 }
+.jip{
+  font-size: 50px;
+  
 
+}
 h1 {
   margin: 0;
   font-size: 22px;

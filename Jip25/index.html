@@ -10,10 +10,10 @@
   <div class="wrap">
     <header>
       <div class="logo">
-        <img src="imagens/Imagem5.png" alt="Logo">
+        <img src="imagens/LOGO BRANCA.png " alt="Logo">
       </div>
       <div>
-        <h1>JIP 2025 — Painel de Organização</h1>
+        <h1 class="jip">JIP 2025 — Painel de Organização</h1>
       </div>
     </header>
 
@@ -37,11 +37,11 @@
           </div>
 
           <div style="margin-top:10px">
-            <div class="small">Turma A</div>
+            <div class="small">CASA</div>
             <select id="selEquipeA"></select>
           </div>
           <div style="margin-top:10px">
-            <div class="small">Turma B</div>
+            <div class="small">VISITANTE</div>
             <select id="selEquipeB"></select>
           </div>
 
@@ -77,11 +77,14 @@
       <main>
         <div class="card" style="margin-bottom:12px">
           <div class="header-row">
-            <strong>Partidas agendadas</strong>
-            <div class="chip" id="totalMatches">0 partidas</div>
+            <strong>Partidas </strong>
+            <div class="chip" id="totalMatches"> 0 partidas</div>
+            <button id="toggleMatches" class="btn-ghost" style="margin-left:auto">Ocultar</button>
           </div>
 
-          <div class="list matches-list" id="matches"></div>
+          <div class="list matches-list" id="matchesArea">
+            <div id="matches"></div>
+          </div>
         </div>
 
         <div class="card">
@@ -95,9 +98,19 @@
       </main>
     </div>
 
-    <footer style="margin-top:16px;color:var(--muted);font-size:13px">Protótipo gerado automaticamente — abrir no navegador. Os dados ficam no seu computador (LocalStorage).</footer>
+    <footer style="margin-top:16px;color:var(--muted);font-size:13px">.</footer>
   </div>
 
   <script src="js/script.js"></script>
+  <script>
+  const btnToggle = document.getElementById('toggleMatches');
+  const matchesArea = document.getElementById('matchesArea');
+  let matchesVisible = true;
+  btnToggle.addEventListener('click', () => {
+    matchesVisible = !matchesVisible;
+    matchesArea.style.display = matchesVisible ? 'block' : 'none';
+    btnToggle.textContent = matchesVisible ? 'Ocultar' : 'Expandir';
+  });
+  </script>
 </body>
 </html>

@@ -3,16 +3,16 @@ const initialTeams = [
   '6°A','6°B','6°C','6°D','7°A','7°C','7°D','8°A','8°B','8°C','8°D','9°A','9°B','1° ANO','2° ANO','3° ANO'
 ];
 const initialModalities = [
-  {id:'braw', name:'BRAW STARS', category:'misto'},
-  {id:'corrida100', name:'CORRIDA 100m', category:'masculino/feminino'},
-  {id:'dama', name:'DAMA', category:'misto'},
-  {id:'domino', name:'DOMINÓ', category:'misto'},
-  {id:'fut7', name:'FUT 7', category:'masculino/feminino'},
-  {id:'futmesa', name:'FUT MESA', category:'masculino/feminino'},
-  {id:'handbol', name:'HANDBOL', category:'masculino/feminino'},
-  {id:'queimado', name:'QUEIMADO', category:'masculino/feminino'},
-  {id:'voleiPraia', name:'VÔLEI DE PRAIA', category:'misto'},
-  {id:'xadrez', name:'XADREZ', category:'misto'}
+  {id:'braw', name:'BRAW STARS'},
+  {id:'corrida100', name:'CORRIDA 100m'},
+  {id:'dama', name:'DAMA'},
+  {id:'domino', name:'DOMINÓ'},
+  {id:'fut7', name:'FUT 7'},
+  {id:'futmesa', name:'FUT MESA'},
+  {id:'handbol', name:'HANDBOL'},
+  {id:'queimado', name:'QUEIMADO'},
+  {id:'voleiPraia', name:'VÔLEI DE PRAIA'},
+  {id:'xadrez', name:'XADREZ'}
 ];
 
 // --- Storage keys ---
@@ -22,7 +22,6 @@ const KEY_MATCHES = 'jip2025_matches';
 
 // --- Helpers ---
 const qs = s => document.querySelector(s);
-const qsa = s => Array.from(document.querySelectorAll(s));
 
 function loadOrInit(){
   if(!localStorage.getItem(KEY_TEAMS)) localStorage.setItem(KEY_TEAMS, JSON.stringify(initialTeams));
@@ -42,7 +41,7 @@ function populateSelectors(){
   const selA = qs('#selEquipeA'); const selB = qs('#selEquipeB');
   const selMod = qs('#selModalidade'); const filterMod = qs('#filterModalidade');
   [selA,selB].forEach(s => { s.innerHTML = teams.map(t=>`<option value="${t}">${t}</option>`).join('') });
-  selMod.innerHTML = mods.map(m=>`<option value="${m.id}">${m.name} (${m.category})</option>`).join('');
+  selMod.innerHTML = mods.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
   filterMod.innerHTML = '<option value="all">Todas as modalidades</option>' + mods.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
 }
 
@@ -56,7 +55,7 @@ function renderMatches(){
     return `
       <div class="match">
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <div><strong>${m.name}</strong> <span class="muted">(${mt.categoria})</span></div>
+          <div><strong>${m.name}</strong></div>
           <div class="small muted">${mt.data? new Date(mt.data).toLocaleString() : ''}</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;margin-top:8px">
@@ -71,10 +70,13 @@ function renderMatches(){
   }).join('') || '<div class="muted">Sem partidas cadastradas</div>';
 }
 
-// --- Create match ---
+// --- criar partida ---
 qs('#btnCriar').addEventListener('click',()=>{
-  const mod = qs('#selModalidade').value; const cat = qs('#selCategoria').value;
-  const a = qs('#selEquipeA').value; const b = qs('#selEquipeB').value; const d = qs('#inpData').value;
+  const mod = qs('#selModalidade').value; 
+  const cat = qs('#selCategoria').value;
+  const a = qs('#selEquipeA').value; 
+  const b = qs('#selEquipeB').value; 
+  const d = qs('#inpData').value;
   if(!a || !b || a===b){ alert('Escolha duas turmas diferentes'); return; }
   const arr = getMatches();
   arr.push({modalidade:mod,categoria:cat,equipeA:a,equipeB:b,data:d,scoreA:null,scoreB:null});
@@ -98,19 +100,28 @@ window.editMatch = function(i){
   arr[i].scoreB = Number.isNaN(nB)? null : nB;
   saveMatches(arr); renderMatches(); renderRanking();
 }
-window.deleteMatch = function(i){ const arr=getMatches(); if(!confirm('Apagar partida?')) return; arr.splice(i,1); saveMatches(arr); renderMatches(); renderRanking(); }
+window.deleteMatch = function(i){ 
+  const arr=getMatches(); 
+  if(!confirm('Apagar partida?')) return; 
+  arr.splice(i,1); 
+  saveMatches(arr); 
+  renderMatches(); 
+  renderRanking(); 
+}
 
-// --- Ranking calculation ---
+// --- Ranking ---
 function computeRanking(filterMod='all', filterCat='all'){
   const matches = getMatches().filter(m=> (filterMod==='all' || m.modalidade===filterMod) && (filterCat==='all' || m.categoria===filterCat) );
   const teams = getTeams();
-  const ptsWin = Number(qs('#ptsWin').value||3); const ptsDraw = Number(qs('#ptsDraw').value||1); const ptsLose = Number(qs('#ptsLose').value||0);
+  const ptsWin = Number(qs('#ptsWin').value||3); 
+  const ptsDraw = Number(qs('#ptsDraw').value||1); 
+  const ptsLose = Number(qs('#ptsLose').value||0);
   const stats = {};
   teams.forEach(t=> stats[t] = {team:t, points:0, played:0, wins:0, draws:0, losses:0, gf:0, ga:0, gd:0});
 
   matches.forEach(m=>{
     const a = m.equipeA, b = m.equipeB; const sA = m.scoreA, sB = m.scoreB;
-    if(sA==null || sB==null) return; // sem resultado
+    if(sA==null || sB==null) return;
     stats[a].played++; stats[b].played++;
     stats[a].gf += Number(sA); stats[a].ga += Number(sB);
     stats[b].gf += Number(sB); stats[b].ga += Number(sA);
@@ -130,7 +141,8 @@ function computeRanking(filterMod='all', filterCat='all'){
 }
 
 function renderRanking(){
-  const filterMod = qs('#filterModalidade').value; const filterCat = qs('#filterCategoria').value;
+  const filterMod = qs('#filterModalidade').value; 
+  const filterCat = qs('#filterCategoria').value;
   const ranking = computeRanking(filterMod, filterCat);
   const area = qs('#rankingArea');
   const modName = filterMod==='all'? 'Geral (todas modalidades)' : (getModalities().find(m=>m.id===filterMod)||{name:filterMod}).name;
@@ -159,8 +171,8 @@ function renderRanking(){
 
 qs('#btnAtualizar').addEventListener('click', renderRanking);
 
-// --- Overall (sum of modalities) ---
-// The "filterModalidade=all" already sums all matches; this gives overall ranking by default.
-
 // --- Init ---
-loadOrInit(); populateSelectors(); renderMatches(); renderRanking();
+loadOrInit(); 
+populateSelectors(); 
+renderMatches(); 
+renderRanking();
